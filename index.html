@@ -5,6 +5,27 @@
   <link rel=stylesheet href="http://necolas.github.com/normalize.css/2.0.1/normalize.css">
   <link rel=stylesheet href="style.css">
 <body>
-<h1>Start Page</h1>
-<p>This is a page on github.
+<h1>Irxground</h1>
 
+<div id=starred>
+  <form>
+    <input type=search id=starred_search>
+    <div id=starred_items></div>
+  </form>
+</div>
+
+
+<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+<script>
+  alert("zero");
+  $(function(){
+    "use strict";
+    var url = "https://api.github.com/irxground/starred";
+    alert("first");
+    $(url, function(data){
+      alert("second);
+      var starred = JSON.parse(data);
+      $(#starred_items).text(starred[0].name);
+    });
+  });
+</script>
