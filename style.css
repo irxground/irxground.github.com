@@ -4,6 +4,7 @@ body {
   background-color: #EEE;
 }
 h1 {
+  display: none;
   margin: 0;
   padding: 0;
   text-align: center;
@@ -11,4 +12,10 @@ h1 {
   text-shadow:
     0 -1px 1px rgba(0, 0, 0, 0.4)
     0  1px 1px rgba(255, 255, 255, 0.75);
+}
+
+#starred {
+  margin: 20px;
+  padding: 10px;
+
 }
