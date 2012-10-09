@@ -2,27 +2,48 @@
 <head>
   <meta charset=utf-8>
   <title>Irxground</title>
-  <link rel=stylesheet href="http://necolas.github.com/normalize.css/2.0.1/normalize.css">
   <link rel=stylesheet href="style.css">
+  <script src="http://underscorejs.org/underscore-min.js"></script>
+  <script src="http://backbonejs.org/backbone-min.js"></script>
+  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+  <script src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
 <body>
 <h1>Irxground</h1>
 
 <div id=starred>
-  <form>
+  <form action="">
     <input type=search id=starred_search>
-    <ul id=starred_items>
-      <!--
+    <ul id=starred_items></ul>
+    <script id="starred_template" type="text/x-jquery-tmpl">
       <li>
-        <div>
-          <h2 class=name>Project A</h2>
-          <p class=description></p>
-        </div>
-      -->
-    </ul>
+        <h2><a href="${html_url}">${full_name}</a></h2>
+        <p>${description}</p>
+      </li>
+    </script>
+    <script>
+      $(function(){
+        var url = "https://api.github.com/users/irxground/starred";
+        $.getJSON(url + "?callback=?", function(res) {
+          var data = res.data;
+          var txt = "";
+          function apply(repos) {
+            var root = $("#starred_items");
+            root.empty();
+            $("#starred_template").tmpl(repos).appendTo(root);
+          }
+          apply(data);
+          $("#starred_search").keyup(function(event) {
+            if (txt == this.value) return;
+            txt = this.value;
+            var filtered = _.filter(data, function(repo){
+              return repo.full_name.indexOf(txt) >= 0
+                  || repo.description.indexOf(txt) >= 0;
+            });
+            apply(filtered);
+          });
+        });
+      });
+    </script>
   </form>
 </div>
 
-<script src="http://underscorejs.org/underscore-min.js"></script>
-<script src="http://backbonejs.org/backbone-min.js"></script>
-<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-<script src="script.js"></script>
