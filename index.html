@@ -35,9 +35,10 @@
           $("#starred_search").keyup(function(event) {
             if (txt == this.value) return;
             txt = this.value;
+            var words = _.map(txt.split(' '), function(s){ return s.toLowerCase(); });
             var filtered = _.filter(data, function(repo){
-              return repo.full_name.indexOf(txt) >= 0
-                  || repo.description.indexOf(txt) >= 0;
+              var search = (repo.full_name + repo.description).toLowerCase();
+              return _.all(words, function(word) { return search.indexOf(word) >= 0; });
             });
             apply(filtered);
           });
