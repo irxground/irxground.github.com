@@ -3,16 +3,12 @@
   <meta charset=utf-8>
   <title>Irxground</title>
   <link rel=stylesheet href="style.css">
-  <script src="http://underscorejs.org/underscore-min.js"></script>
-  <script src="http://backbonejs.org/backbone-min.js"></script>
-  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-  <script src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
 <body>
 <h1>Irxground</h1>
 
 <div id=starred>
   <form action="">
-    <input type=search id=starred_search>
+    <input type=search id=starred_search autofocus>
     <ul id=starred_items></ul>
     <script id="starred_template" type="text/x-jquery-tmpl">
       <li>
@@ -20,31 +16,11 @@
         <p>${description}</p>
       </li>
     </script>
-    <script>
-      $(function(){
-        var url = "https://api.github.com/users/irxground/starred";
-        $.getJSON(url + "?per_page=100&callback=?", function(res) {
-          var data = res.data;
-          var txt = "";
-          function apply(repos) {
-            var root = $("#starred_items");
-            root.empty();
-            $("#starred_template").tmpl(repos).appendTo(root);
-          }
-          apply(data);
-          $("#starred_search").keyup(function(event) {
-            if (txt == this.value) return;
-            txt = this.value;
-            var words = _.map(txt.split(' '), function(s){ return s.toLowerCase(); });
-            var filtered = _.filter(data, function(repo){
-              var search = (repo.full_name + repo.description).toLowerCase();
-              return _.all(words, function(word) { return search.indexOf(word) >= 0; });
-            });
-            apply(filtered);
-          });
-        });
-      });
-    </script>
   </form>
 </div>
+<script src="http://underscorejs.org/underscore-min.js"></script>
+<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+<script src="script.js"></script>
+<script src="https://api.github.com/users/irxground/starred?per_page=100&callback=Irxground.setStarred" defer></script>
 
